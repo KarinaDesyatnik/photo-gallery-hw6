@@ -1,12 +1,16 @@
-import React from 'react'
-import "./loader.sass"
+import React from 'react';
+import './loader.sass';
 
-const Loader = () => {
-    return(
-        <div className={"main-loader-container"}>
-            <div className="main-loader"></div>
+const Loader = ({loading, showMorePhotos}) => {
+    return (         
+        <div className={"loader-box"}>
+             <span
+                onClick={() =>  showMorePhotos()}
+                className={`glyphicon glyphicon-refresh loader ${loading ? "active" : ""}`}
+            >
+        </span>
         </div>
-    )
+    );
 };
 
-export default Loader
+export default Loader;

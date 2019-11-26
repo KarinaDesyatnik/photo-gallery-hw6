@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import GalleryService from "../../servise";
 import "./gallery_list.sass"
 import {Link} from "react-router-dom";
+import  Loader from "../loader/loader";
 
 const service = new GalleryService();
 
@@ -10,7 +11,8 @@ export default class GalleryList extends Component {
     state = {
         list: [],
         page: 1,
-        loading: true
+        loading: true,
+     
     };
 
     componentDidMount() {
@@ -59,8 +61,12 @@ export default class GalleryList extends Component {
             })
     };
 
+   
+
     render(){
-        const {list, loading} = this.state;
+        let {loading} = this.state;
+        let {list} = this.props;
+        
 
         return(
             <div className={"gallery-section"}>
@@ -80,13 +86,9 @@ export default class GalleryList extends Component {
                         })
                     }
                 </div>
-                <div className="loader-box">
-                    <span
-                        onClick={() => this.showMorePhotos()}
-                        className={`glyphicon glyphicon-refresh loader ${loading? "active" : ""}`}>
-                    </span>
-                </div>
+                 {/* <Loader loading={loading} showMorePhotos={this.showMorePhotos}/> */}
             </div>
         )
-    }
+    } 
+    
 }

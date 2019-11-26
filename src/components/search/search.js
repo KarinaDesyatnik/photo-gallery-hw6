@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import GalleryService from "../../servise";
 import  GalleryList from "../gallery-list/gallery-list";
+import  Loader from "../loader/loader";
 import "./search.sass"
 
 const service = new GalleryService();
@@ -29,14 +30,31 @@ export default class Search extends Component {
             .then(search => this.setState(
                 {
                     search: search.results,
-                    loading: true,
+                    loading: false,
                     empty: ''
                 }
             ));
     };
 
+    showMorePhotos = () => {
+        const {page, value, search} = this.state;
+        this.setState({loading: true});
+        service.getSearch(value, page)
+            .then((data) => {
+                this.setState({
+                    search: [
+                        ...search,
+                        ...data.results
+                    ],
+                    page: page + 1,
+                    loading: false,
+                })
+            })
+    };
+    
     render(){
-        const {value, search, empty} = this.state;
+        const {value, search, empty, loading, page} = this.state;
+        
         return (
             <>
                 <div className={"search"}>
@@ -58,12 +76,11 @@ export default class Search extends Component {
                 }>
                  {empty}
                 </div>   
-        {
-          search.length > 0 ? <GalleryList list={search} /> : ''     
-        }  
-        {
-            console.log(value)
-        }  
+          <GalleryList list={search} />
+          {
+          search.length > 0 ? <Loader page={page} loading={loading} showMorePhotos={this.showMorePhotos}/> : ""
+        }           
+        
                    
          </>
         );
